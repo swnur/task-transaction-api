@@ -19,17 +19,9 @@ public class TransactionsController {
     private final TransactionsService transactionsService;
 
     @GetMapping
-    public ResponseEntity<List<DetailedTransactionsResponseDTO>> getDetailedTransactions() {
-        List<DetailedTransactionsResponseDTO> listResponseDTO = transactionsService.getAllTransactions();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(listResponseDTO);
-    }
-
-    @GetMapping("/{limitExceeded}")
-    public ResponseEntity<List<TransactionsResponseDTO>> getTransactions(
-            @PathVariable Boolean limitExceeded) {
-        List<TransactionsResponseDTO> listResponseDTO = transactionsService.getAllTransactionsWith(limitExceeded);
+    public ResponseEntity<List<DetailedTransactionsResponseDTO>> getTransactions(
+            @RequestParam(required = false) Boolean limitExceeded) {
+        List<DetailedTransactionsResponseDTO> listResponseDTO = transactionsService.getAllTransactions(limitExceeded);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(listResponseDTO);
@@ -40,7 +32,7 @@ public class TransactionsController {
             @RequestBody TransactionsRequestDTO transactionsRequestDTO) {
         DetailedTransactionsResponseDTO responseDTO = transactionsService.saveNewTransaction(transactionsRequestDTO);
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(responseDTO);
     }
 }

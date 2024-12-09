@@ -21,7 +21,7 @@ public class ExchangeCurrencyService {
                 .orElseThrow(() -> new InvalidCurrencyCodeException(currencyCode + " does not exist in the currency table"));
         Currency currencyUSD = currencyRepository.findByCode("USD")
                 .orElseThrow(() -> new InvalidCurrencyCodeException("USD does not exist in the currency table"));
-        BigDecimal rateFromCurrencyCodeToUSD = exchangeCurrencyRepository.findByBaseCurrencyAndTargetCurrency(currencyFrom, currencyUSD);
+        BigDecimal rateFromCurrencyCodeToUSD = exchangeCurrencyRepository.findRateByBaseCurrencyAndTargetCurrency(currencyFrom, currencyUSD);
         return amount.multiply(rateFromCurrencyCodeToUSD);
     }
 }

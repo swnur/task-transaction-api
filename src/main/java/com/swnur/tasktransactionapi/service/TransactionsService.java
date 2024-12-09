@@ -26,19 +26,12 @@ public class TransactionsService {
     private final CurrencyService currencyService;
     private final UserCategoryLimitService userCategoryLimitService;
 
-    public List<DetailedTransactionsResponseDTO> getAllTransactions() {
-        List<Transaction> list = transactionsRepository.findAll();
+    public List<DetailedTransactionsResponseDTO> getAllTransactions(Boolean limitExceeded) {
+        List<Transaction> list = limitExceeded == null ?
+                transactionsRepository.findAll() : transactionsRepository.findAllByLimitExceeded(limitExceeded);
         return list
                 .stream()
                 .map(DetailedTransactionsResponseDTO::new)
-                .toList();
-    }
-
-    public List<TransactionsResponseDTO> getAllTransactionsWith(Boolean limitExceeded) {
-        List<Transaction> list = transactionsRepository.findAllByLimitExceeded(limitExceeded);
-        return list
-                .stream()
-                .map(TransactionsResponseDTO::new)
                 .toList();
     }
 

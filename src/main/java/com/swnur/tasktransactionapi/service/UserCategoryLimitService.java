@@ -32,9 +32,12 @@ public class UserCategoryLimitService {
 
         UserCategoryLimit category = userCategoryLimitRepository.findLatestUserCategoryLimitByUserIdAndCategoryType(userId, categoryType.toString());
         newCategoryLimit.setCategoryType(categoryType);
+
         newCategoryLimit.setLimitAmount(newLimitAmount);
+
         BigDecimal subtractedAmount = category.getLimitAmount().subtract(category.getRemainingLimitAmount());
         newCategoryLimit.setRemainingLimitAmount(newLimitAmount.subtract(subtractedAmount));
+
         newCategoryLimit.setDateTime(OffsetDateTime.now());
 
         return userCategoryLimitRepository.save(newCategoryLimit);

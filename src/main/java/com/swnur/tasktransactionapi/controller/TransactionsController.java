@@ -2,7 +2,6 @@ package com.swnur.tasktransactionapi.controller;
 
 import com.swnur.tasktransactionapi.dto.DetailedTransactionsResponseDTO;
 import com.swnur.tasktransactionapi.dto.TransactionsRequestDTO;
-import com.swnur.tasktransactionapi.dto.TransactionsResponseDTO;
 import com.swnur.tasktransactionapi.service.TransactionsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

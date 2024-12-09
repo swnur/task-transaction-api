@@ -2,7 +2,6 @@ package com.swnur.tasktransactionapi.service;
 
 import com.swnur.tasktransactionapi.dto.DetailedTransactionsResponseDTO;
 import com.swnur.tasktransactionapi.dto.TransactionsRequestDTO;
-import com.swnur.tasktransactionapi.dto.TransactionsResponseDTO;
 import com.swnur.tasktransactionapi.model.Currency;
 import com.swnur.tasktransactionapi.model.Transaction;
 import com.swnur.tasktransactionapi.model.User;

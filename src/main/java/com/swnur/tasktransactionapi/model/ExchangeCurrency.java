@@ -31,10 +31,4 @@ public class ExchangeCurrency {
     @Column(name = "date")
     private LocalDateTime dateTime;
 
-    public ExchangeCurrency(Currency baseCurrency, Currency targetCurrency, BigDecimal rate, LocalDateTime dateTime) {
-        this.baseCurrency = baseCurrency;
-        this.targetCurrency = targetCurrency;
-        this.rate = rate;
-        this.dateTime = dateTime;
-    }
 }

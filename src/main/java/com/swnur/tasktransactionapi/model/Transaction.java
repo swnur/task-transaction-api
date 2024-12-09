@@ -42,13 +42,4 @@ public class Transaction {
     @Column(name = "limit_exceeded")
     private Boolean limitExceeded;
 
-    public Transaction(User sendingUser, User receivingUser, Currency currency, UserCategoryLimit category, BigDecimal amount, OffsetDateTime createdAt, Boolean limitExceeded) {
-        this.sendingUser = sendingUser;
-        this.receivingUser = receivingUser;
-        this.currency = currency;
-        this.category = category;
-        this.amount = amount;
-        this.createdAt = createdAt;
-        this.limitExceeded = limitExceeded;
-    }
 }

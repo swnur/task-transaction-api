@@ -25,9 +25,4 @@ public class User {
     @Column(name = "account")
     private BigInteger account;
 
-    public User(String firstName, String lastName, BigInteger account) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.account = account;
-    }
 }

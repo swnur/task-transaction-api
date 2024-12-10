@@ -8,6 +8,7 @@ import com.swnur.tasktransactionapi.proxy.ExchangeRatesProxy;
 import com.swnur.tasktransactionapi.repository.CurrencyRepository;
 import com.swnur.tasktransactionapi.repository.ExchangeCurrencyRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,7 +23,8 @@ public class ExchangeRatesService {
     private final ExchangeCurrencyRepository exchangeCurrencyRepository;
     private final CurrencyRepository currencyRepository;
 
-    public void fetchDailyExchangeRateFromUSD() {
+    @Scheduled(cron = "@midnight")
+    public void fetchDailyExchangeRatesFromUSD() {
         Currency currencyUSD = currencyRepository.findByCode("USD")
                 .orElseThrow(() -> new InvalidCurrencyCodeException("Invalid currency code was given"));
         ExchangeRateProxyResponse response = exchangeRatesProxy.getLatestExchangeRate(currencyUSD.getCode());

@@ -3,6 +3,7 @@ package com.swnur.tasktransactionapi.controller;
 import com.swnur.tasktransactionapi.dto.DetailedTransactionsResponseDTO;
 import com.swnur.tasktransactionapi.dto.TransactionsRequestDTO;
 import com.swnur.tasktransactionapi.service.TransactionsService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class TransactionsController {
 
     @PostMapping
     public ResponseEntity<DetailedTransactionsResponseDTO> saveNewTransaction(
-            @RequestBody TransactionsRequestDTO transactionsRequestDTO) {
+            @Valid @RequestBody TransactionsRequestDTO transactionsRequestDTO) {
         DetailedTransactionsResponseDTO responseDTO = transactionsService.saveNewTransaction(transactionsRequestDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

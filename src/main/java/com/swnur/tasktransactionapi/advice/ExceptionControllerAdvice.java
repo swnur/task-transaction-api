@@ -6,11 +6,21 @@ import com.swnur.tasktransactionapi.exception.InvalidUserAccountException;
 import com.swnur.tasktransactionapi.model.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDetails> exceptionMethodArgumentNotValid(MethodArgumentNotValidException e) {
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setMessage(e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorDetails);
+    }
 
     @ExceptionHandler(InvalidBigDecimalAmount.class)
     public ResponseEntity<ErrorDetails> exceptionInvalidBigDecimalAmount(InvalidBigDecimalAmount e) {
@@ -22,7 +32,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(InvalidCurrencyCodeException.class)
-    public ResponseEntity<ErrorDetails> exceptionInvalidCurrencyCode(InvalidBigDecimalAmount e) {
+    public ResponseEntity<ErrorDetails> exceptionInvalidCurrencyCode(InvalidCurrencyCodeException e) {
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setMessage(e.getMessage());
         return ResponseEntity
@@ -31,7 +41,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(InvalidUserAccountException.class)
-    public ResponseEntity<ErrorDetails> exceptionInvalidUserAccountException(InvalidBigDecimalAmount e) {
+    public ResponseEntity<ErrorDetails> exceptionInvalidUserAccountException(InvalidUserAccountException e) {
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setMessage(e.getMessage());
         return ResponseEntity

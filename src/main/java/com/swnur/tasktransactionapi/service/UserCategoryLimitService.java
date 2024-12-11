@@ -1,5 +1,6 @@
 package com.swnur.tasktransactionapi.service;
 
+import com.swnur.tasktransactionapi.dto.UserCategoryLimitRequestDTO;
 import com.swnur.tasktransactionapi.exception.InvalidUserAccountException;
 import com.swnur.tasktransactionapi.model.CategoryType;
 import com.swnur.tasktransactionapi.model.User;
@@ -21,22 +22,24 @@ public class UserCategoryLimitService {
     private final UserCategoryLimitRepository userCategoryLimitRepository;
     private final UserRepository userRepository;
 
-    public UserCategoryLimit saveNewLimit(Long userId, CategoryType categoryType, BigDecimal newLimitAmount) {
-        ValidationUtils.validateBigDecimalAmount(newLimitAmount);
+    public UserCategoryLimit saveNewLimit(UserCategoryLimitRequestDTO userCategoryLimit) {
+        ValidationUtils.isValidBigDecimalAmount(userCategoryLimit.getAmount());
 
         UserCategoryLimit newCategoryLimit = new UserCategoryLimit();
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(userCategoryLimit.getUserId())
                 .orElseThrow(() -> new InvalidUserAccountException("Invalid user id was given, user does not exist"));
         newCategoryLimit.setUser(user);
 
-        UserCategoryLimit category = userCategoryLimitRepository.findLatestUserCategoryLimitByUserIdAndCategoryType(userId, categoryType.toString());
-        newCategoryLimit.setCategoryType(categoryType);
+        UserCategoryLimit category = userCategoryLimitRepository
+                .findLatestUserCategoryLimitByUserIdAndCategoryType(
+                        userCategoryLimit.getUserId(), userCategoryLimit.getCategoryType().toString());
+        newCategoryLimit.setCategoryType(userCategoryLimit.getCategoryType());
 
-        newCategoryLimit.setLimitAmount(newLimitAmount);
+        newCategoryLimit.setLimitAmount(userCategoryLimit.getAmount());
 
         BigDecimal subtractedAmount = category.getLimitAmount().subtract(category.getRemainingLimitAmount());
-        newCategoryLimit.setRemainingLimitAmount(newLimitAmount.subtract(subtractedAmount));
+        newCategoryLimit.setRemainingLimitAmount(userCategoryLimit.getAmount().subtract(subtractedAmount));
 
         newCategoryLimit.setDateTime(OffsetDateTime.now());
 

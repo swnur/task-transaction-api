@@ -35,7 +35,7 @@ public class TransactionsService {
     }
 
     public DetailedTransactionsResponseDTO saveNewTransaction(TransactionsRequestDTO transactionsRequestDTO) {
-        ValidationUtils.validateBigDecimalAmount(transactionsRequestDTO.getAmount());
+        ValidationUtils.isValidBigDecimalAmount(transactionsRequestDTO.getAmount());
 
         Transaction transaction = new Transaction();
 
@@ -45,11 +45,11 @@ public class TransactionsService {
         User userAccountTo = userService.findByAccount(transactionsRequestDTO.getAccountTo());
         transaction.setReceivingUser(userAccountTo);
 
-        Currency currency = currencyService.findCurrencyByCurrencyCode(transactionsRequestDTO.getCurrencyShortName());
+        Currency currency = currencyService.findCurrencyByCurrencyCode(transactionsRequestDTO.getCurrencyCode());
         transaction.setCurrency(currency);
 
         BigDecimal convertedAmount = exchangeCurrencyService.convertToUSD(
-                transactionsRequestDTO.getAmount(), transactionsRequestDTO.getCurrencyShortName());
+                transactionsRequestDTO.getAmount(), transactionsRequestDTO.getCurrencyCode());
         UserCategoryLimit categoryLimit = userCategoryLimitService.updateRemainingLimit(
                 userAccountFrom.getId(), transactionsRequestDTO.getCategoryType(),convertedAmount);
         transaction.setCategory(categoryLimit);

@@ -21,18 +21,16 @@ public class TransactionsController {
     @GetMapping
     public ResponseEntity<List<DetailedTransactionsResponseDTO>> getTransactions(
             @RequestParam(required = false) Boolean limitExceeded) {
-        List<DetailedTransactionsResponseDTO> listResponseDTO = transactionsService.getAllTransactions(limitExceeded);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(listResponseDTO);
+                .body(transactionsService.getAllTransactions(limitExceeded));
     }
 
     @PostMapping
     public ResponseEntity<DetailedTransactionsResponseDTO> saveNewTransaction(
             @Valid @RequestBody TransactionsRequestDTO transactionsRequestDTO) {
-        DetailedTransactionsResponseDTO responseDTO = transactionsService.saveNewTransaction(transactionsRequestDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(responseDTO);
+                .body(transactionsService.saveNewTransaction(transactionsRequestDTO));
     }
 }

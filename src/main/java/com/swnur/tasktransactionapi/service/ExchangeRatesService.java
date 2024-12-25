@@ -1,11 +1,9 @@
 package com.swnur.tasktransactionapi.service;
 
-import com.swnur.tasktransactionapi.exception.InvalidCurrencyCodeException;
 import com.swnur.tasktransactionapi.model.Currency;
 import com.swnur.tasktransactionapi.model.ExchangeCurrency;
 import com.swnur.tasktransactionapi.model.ExchangeRateProxyResponse;
 import com.swnur.tasktransactionapi.proxy.ExchangeRatesProxy;
-import com.swnur.tasktransactionapi.repository.CurrencyRepository;
 import com.swnur.tasktransactionapi.repository.ExchangeCurrencyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,12 +19,11 @@ public class ExchangeRatesService {
 
     private final ExchangeRatesProxy exchangeRatesProxy;
     private final ExchangeCurrencyRepository exchangeCurrencyRepository;
-    private final CurrencyRepository currencyRepository;
+    private final CurrencyService currencyService;
 
     @Scheduled(cron = "@midnight")
     public void fetchDailyExchangeRatesFromUSD() {
-        Currency currencyUSD = currencyRepository.findByCode("USD")
-                .orElseThrow(() -> new InvalidCurrencyCodeException("Invalid currency code was given"));
+        Currency currencyUSD = currencyService.findCurrencyByCurrencyCode("USD");
         ExchangeRateProxyResponse response = exchangeRatesProxy.getLatestExchangeRate(currencyUSD.getCode());
 
         List<ExchangeCurrency> targetCurrencies = exchangeCurrencyRepository.findTargetCurrenciesForBaseCurrency(currencyUSD);

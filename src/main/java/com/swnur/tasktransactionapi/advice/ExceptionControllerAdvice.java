@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, InvalidBigDecimalAmount.class,
+            InvalidCurrencyCodeException.class, InvalidUserAccountException.class})
     public ResponseEntity<ErrorDetails> exceptionMethodArgumentNotValid(MethodArgumentNotValidException e) {
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setMessage(e.getMessage());
@@ -22,30 +23,4 @@ public class ExceptionControllerAdvice {
                 .body(errorDetails);
     }
 
-    @ExceptionHandler(InvalidBigDecimalAmount.class)
-    public ResponseEntity<ErrorDetails> exceptionInvalidBigDecimalAmount(InvalidBigDecimalAmount e) {
-        ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setMessage(e.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errorDetails);
-    }
-
-    @ExceptionHandler(InvalidCurrencyCodeException.class)
-    public ResponseEntity<ErrorDetails> exceptionInvalidCurrencyCode(InvalidCurrencyCodeException e) {
-        ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setMessage(e.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errorDetails);
-    }
-
-    @ExceptionHandler(InvalidUserAccountException.class)
-    public ResponseEntity<ErrorDetails> exceptionInvalidUserAccountException(InvalidUserAccountException e) {
-        ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setMessage(e.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errorDetails);
-    }
 }

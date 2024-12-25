@@ -17,11 +17,15 @@ public class ExchangeCurrencyService {
     private final CurrencyRepository currencyRepository;
 
     public BigDecimal convertToUSD(BigDecimal amount, String currencyCode) {
-        Currency currencyFrom = currencyRepository.findByCode(currencyCode)
-                .orElseThrow(() -> new InvalidCurrencyCodeException(currencyCode + " does not exist in the currency table"));
-        Currency currencyUSD = currencyRepository.findByCode("USD")
-                .orElseThrow(() -> new InvalidCurrencyCodeException("USD does not exist in the currency table"));
-        BigDecimal rateFromCurrencyCodeToUSD = exchangeCurrencyRepository.findRateByBaseCurrencyAndTargetCurrency(currencyFrom, currencyUSD);
+        Currency currencyFrom = findCurrencyByCode(currencyCode);
+        Currency currencyUSD = findCurrencyByCode("USD");
+        BigDecimal rateFromCurrencyCodeToUSD = exchangeCurrencyRepository
+                .findRateByBaseCurrencyAndTargetCurrency(currencyFrom, currencyUSD);
         return amount.multiply(rateFromCurrencyCodeToUSD);
+    }
+
+    private Currency findCurrencyByCode(String currencyCode) {
+        return currencyRepository.findByCode(currencyCode)
+                .orElseThrow(() -> new InvalidCurrencyCodeException(currencyCode + " does not exist in the currency table"));
     }
 }

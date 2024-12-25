@@ -7,7 +7,6 @@ import com.swnur.tasktransactionapi.model.User;
 import com.swnur.tasktransactionapi.model.UserCategoryLimit;
 import com.swnur.tasktransactionapi.repository.UserCategoryLimitRepository;
 import com.swnur.tasktransactionapi.repository.UserRepository;
-import com.swnur.tasktransactionapi.utils.ValidationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,6 @@ public class UserCategoryLimitService {
     private final UserRepository userRepository;
 
     public UserCategoryLimit saveNewLimit(UserCategoryLimitRequestDTO userCategoryLimit) {
-        ValidationUtils.isValidBigDecimalAmount(userCategoryLimit.getAmount());
-
         UserCategoryLimit newCategoryLimit = new UserCategoryLimit();
 
         User user = userRepository.findById(userCategoryLimit.getUserId())

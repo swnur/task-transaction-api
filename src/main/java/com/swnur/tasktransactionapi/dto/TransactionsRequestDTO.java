@@ -24,7 +24,7 @@ public class TransactionsRequestDTO {
     private String currencyCode;
 
     @NotNull(message = "'amount' value can not be null")
-    @DecimalMin(value = "0.00", message = "amount value can be less than zero")
+    @DecimalMin(value = "0.00", message = "'amount' value can be less than zero")
     private BigDecimal amount;
 
     @NotNull(message = "'categoryType' can not be null")

@@ -7,11 +7,12 @@ import com.swnur.tasktransactionapi.model.Transaction;
 import com.swnur.tasktransactionapi.model.User;
 import com.swnur.tasktransactionapi.model.UserCategoryLimit;
 import com.swnur.tasktransactionapi.repository.*;
-import com.swnur.tasktransactionapi.utils.ValidationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -34,15 +35,14 @@ public class TransactionsService {
                 .toList();
     }
 
+    @Transactional
     public DetailedTransactionsResponseDTO saveNewTransaction(TransactionsRequestDTO transactionsRequestDTO) {
-        ValidationUtils.isValidBigDecimalAmount(transactionsRequestDTO.getAmount());
-
         Transaction transaction = new Transaction();
 
-        User userAccountFrom = userService.findByAccount(transactionsRequestDTO.getAccountFrom());
+        User userAccountFrom = findUser(transactionsRequestDTO.getAccountFrom());
         transaction.setSendingUser(userAccountFrom);
 
-        User userAccountTo = userService.findByAccount(transactionsRequestDTO.getAccountTo());
+        User userAccountTo = findUser(transactionsRequestDTO.getAccountTo());
         transaction.setReceivingUser(userAccountTo);
 
         Currency currency = currencyService.findCurrencyByCurrencyCode(transactionsRequestDTO.getCurrencyCode());
@@ -61,4 +61,7 @@ public class TransactionsService {
         return new DetailedTransactionsResponseDTO(transactionsRepository.save(transaction));
     }
 
+    private User findUser(BigInteger account) {
+        return userService.findByAccount(account);
+    }
 }
